@@ -10,6 +10,7 @@ requires = [
     'pyramid',
     'pyramid_debugtoolbar',
     'waitress',
+    'sqlite3',
     ]
 
 setup(name='GrowStat',
