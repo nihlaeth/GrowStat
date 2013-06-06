@@ -1,0 +1,96 @@
+body{
+    font-family: sans-serif;
+    font-size: 18px;
+    color: #3e4349;
+}
+
+h1, h2, h3, h4, h5, h5 {
+    font-family: Georgia;
+    color: #373839;
+}
+.center {
+    text-align:center;
+}
+
+h1 {
+font-size: 45px;
+}
+
+a {
+    color: #1b61d6;
+    text-decoration: none;
+}
+
+input {
+    font-size: 18px;
+    width: 400px;
+    border: 1px solid #bbbbbb;
+    padding: 5px;
+}
+
+.button {
+    font-size: 14px;
+    font-weight: bold;
+    width: auto;
+    background: #eeeeee;
+    padding: 5px 20px 5px 20px;
+    border: 1px solid #bbbbbb;
+    border-left: none;
+    border-right: none;
+}
+
+#flash, #notfound {
+    font-sise: 20px;
+    width: 500px;
+    text-align: center;
+    background-color: #e1ecfe;
+    border-top: 2px solid #7a9eec;
+    border-bottom: 2px solid #5a9eec;
+    padding: 10px 20px 10px 20px;
+}
+
+#flash {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#notfound {
+    backgroundocolor: #fbe3e4;
+    border-top: 2px solid #fbc2c4;
+    border-bottom: 2px solid #fbc2c4;
+    padding: 0px 20px 30px 20px;
+}
+
+
+li {
+    padding: 5px 0px 5px 0px;
+    border-bottom: 1px solid #bbbbbb;
+}
+
+#body {
+    margin-right: auto;
+    margin-left:auto;
+}
+
+#nav {
+    width: 250px;
+}
+
+#content {
+    width: 600px;
+    padding: 0px 50px 0px 50px;
+}
+
+#shortstat {
+    border: solid 1px #bbbbbb;
+}
+
+#shortstat tr td {
+    border: solid 1px #bbbbbb;
+    padding: 2px;
+}
+
+#resources tr td {
+    border: solid 1px #bbbbbb;
+    padding: 2px;
+}
