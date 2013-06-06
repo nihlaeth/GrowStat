@@ -10,3 +10,5 @@ Water supply: <select name='supply'>
 </select>
 
 <input type="submit" class="button" value="ADD (no backsies!)" />
+</form>
+

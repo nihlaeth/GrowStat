@@ -4,3 +4,4 @@
 Humidity: <input type="text" name="humidity" />% <br />
 
 <input type="submit" class="button" value="ADD (no backsies!)" />
+</form>

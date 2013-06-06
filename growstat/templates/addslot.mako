@@ -16,3 +16,4 @@ Column: <select name='column'>a
 </select>
 
 <input type="submit" class="button" value="ADD (no backsies!)" />
+</form>

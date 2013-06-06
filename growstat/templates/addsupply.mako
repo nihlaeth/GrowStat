@@ -3,3 +3,4 @@
 <form name="Supply" action="${request.route_url('addsupply')}" method="POST">
 Name: <input type="text" name="name" />
 <input type="submit" class="button" value="ADD (no backsies!)" />
+</form>

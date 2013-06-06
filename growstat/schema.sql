@@ -154,7 +154,8 @@ create table if not exists nutrients (
     tstamp integer default now,
     supply integer not null,
     name char(200) not null,
-    volume decimal not null
+    amount decimal not null,
+    unit char(200) not null
 );
 
 create table if not exists movements (

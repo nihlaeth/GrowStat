@@ -21,3 +21,4 @@ Slot: <select name='slot'>
 </select>
 
 <input type="submit" class="button" value="ADD (no backsies!)" />
+</form>
