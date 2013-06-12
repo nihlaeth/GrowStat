@@ -38,3 +38,28 @@ pyramid               (1.4.2)
 pyramid-debugtoolbar  (1.0.6)
 waitress              (0.8.5)
 pysqlite              (2.6.3)
+
+To Do
+==============
+Recording pages:
+-add height measurement view and template
+-add harves weight view and template
+-add pic upload view and template
+-add log recording page and template
+
+Edit pages:
+All of them, including delete pages.
+
+
+Data views:
+-add timeline view and template
+-add useful analytic pages
+
+Less priority:
+-authentication system
+-backup & backup restore function
+
+Contributors
+==============
+- Nihlaeth
+- Sietse
