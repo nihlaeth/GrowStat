@@ -25,7 +25,7 @@ cd Growstat
 pserve development.ini
 ```
 
-If this doesn't work, create a clean virtualenv (`myvirtualenv myenv
+If this doesn't work, create a clean virtualenv (`virtualenv myenv
 --no-site-packages`), and try installing GrowStat there and running it.
 If that also fails, the build is broken; please inform the developer.
 
