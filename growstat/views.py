@@ -44,7 +44,9 @@ def addplant_view(request):
     cols=cursor.fetchall()
     cursor.execute('select * from supplies where id!=0')
     supplies=cursor.fetchall()
-    return {'slots' : slots, 'columns' : cols, 'supplies': supplies}
+    cursor.execute('select * from plants where slot!=0')
+    plants=cursor.fetchall()
+    return {'slots' : slots, 'columns' : cols, 'supplies': supplies, 'plants' : plants}
 
 @view_config(route_name='addslot', renderer='addslot.mako')
 def addslot_view(request):
@@ -257,6 +259,42 @@ def nutrients_view(request):
     cursor.execute('select * from supplies where id != ?', [0])
     supplies=cursor.fetchall()
     return {'supplies' : supplies}
+
+
+@view_config(route_name='height', renderer='height.mako')
+def height_view(request):
+    if not request.method == 'POST':
+        pass
+    elif not request.POST['height'] or not request.POST['plant']:
+        request.session.flash('Both height and plant to be filled out!')
+    elif not isinstance(float(request.POST['height']),float):
+        request.session.flash('Height must be numerical!')
+    elif not isinstance(int(request.POST['plant']),int):
+        request.session.flash('This is not a valid plant!')
+    else :
+        #now check if the plant exists
+        plant=int(request.POST['plant'])
+        height=float(request.POST['height'])
+        cur=request.db.cursor()
+        cur.execute('select count(*) from plants where id = ?', [plant])
+        count=cur.fetchone()[0]
+        if count !=1 :
+            request.session.flash('This plant does not exist!')
+        else:
+            request.db.execute('insert into height (height, plant) values (?, ?)', [height, plant])
+            request.db.commit()
+            request.session.flash('Plant height was recorded successfully!')
+            return HTTPFound(location=request.route_url('home'))
+    cursor=request.db.cursor()
+    cursor.execute('select * from supplies where id != ?', [0])
+    supplies=cursor.fetchall()
+    cursor.execute('select * from columns where id !=?', [0])
+    columns=cursor.fetchall()
+    cursor.execute('select * from slots where id !=?', [0])
+    slots=cursor.fetchall()
+    cursor.execute('select * from plants where slot!=?',[0])
+    plants=cursor.fetchall()
+    return {'supplies' : supplies, 'columns' : columns, 'slots' : slots, 'plants' : plants}
 
 @view_config(route_name='list',renderer='list.mako')
 def list_view(request):
