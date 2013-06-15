@@ -296,6 +296,157 @@ def height_view(request):
     plants=cursor.fetchall()
     return {'supplies' : supplies, 'columns' : columns, 'slots' : slots, 'plants' : plants}
 
+
+@view_config(route_name='watering', renderer='watering.mako')
+def watering_view(request):
+    if not request.method == 'POST':
+        pass
+    elif not request.POST['action']:
+        request.session.flash('Cross site scripting is not allowed!')
+    elif request.POST['action']=="add":
+        if not request.POST['name']:
+            request.session.flash('You must fill out a name!')
+        else:
+            request.db.execute('insert into timerconfigs (name) values (?)', [request.POST['name']])
+            request.db.commit()
+            request.session.flash('Successfully created new timer setting!')
+            return HTTPFound(location=request.route_url('watering'))
+    elif request.POST['action']=="edit":
+        try:
+            #do your thing
+            if not isinstance(int(request.POST['id']),int):
+                request.session.flash('This is not valid input!')
+            else:
+                sql = 'update timerconfigs set '
+                if request.POST.get('t0000', 0)=='1': sql+= 't0000=1, '
+                else : sql+= 't0000=0, '
+                if request.POST.get('t0030', 0)=='1': sql+= 't0030=1, '
+                else : sql+= 't0030=0, '
+                if request.POST.get('t0100', 0)=='1': sql+= 't0100=1, '
+                else : sql+= 't0100=0, '
+                if request.POST.get('t0130', 0)=='1': sql+= 't0130=1, '
+                else : sql+= 't0130=0, '
+                if request.POST.get('t0200', 0)=='1': sql+= 't0200=1, '
+                else : sql+= 't0200=0, '
+                if request.POST.get('t0230', 0)=='1': sql+= 't0230=1, '
+                else : sql+= 't0230=0, '
+                if request.POST.get('t0300', 0)=='1': sql+= 't0300=1, '
+                else : sql+= 't0300=0, '
+                if request.POST.get('t0330', 0)=='1': sql+= 't0330=1, '
+                else : sql+= 't0330=0, '
+                if request.POST.get('t0400', 0)=='1': sql+= 't0400=1, '
+                else : sql+= 't0400=0, '
+                if request.POST.get('t0430', 0)=='1': sql+= 't0430=1, '
+                else : sql+= 't0430=0, '
+                if request.POST.get('t0500', 0)=='1': sql+= 't0500=1, '
+                else : sql+= 't0500=0, '
+                if request.POST.get('t0530', 0)=='1': sql+= 't0530=1, '
+                else : sql+= 't0530=0, '
+                if request.POST.get('t0600', 0)=='1': sql+= 't0600=1, '
+                else : sql+= 't0600=0, '
+                if request.POST.get('t0630', 0)=='1': sql+= 't0630=1, '
+                else : sql+= 't0630=0, '
+                if request.POST.get('t0700', 0)=='1': sql+= 't0700=1, '
+                else : sql+= 't0700=0, '
+                if request.POST.get('t0730', 0)=='1': sql+= 't0730=1, '
+                else : sql+= 't0730=0, '
+                if request.POST.get('t0800', 0)=='1': sql+= 't0800=1, '
+                else : sql+= 't0800=0, '
+                if request.POST.get('t0830', 0)=='1': sql+= 't0830=1, '
+                else : sql+= 't0830=0, '
+                if request.POST.get('t0900', 0)=='1': sql+= 't0900=1, '
+                else : sql+= 't0900=0, '
+                if request.POST.get('t0930', 0)=='1': sql+= 't0930=1, '
+                else : sql+= 't0930=0, '
+                if request.POST.get('t1000', 0)=='1': sql+= 't1000=1, '
+                else : sql+= 't1000=0, '
+                if request.POST.get('t1030', 0)=='1': sql+= 't1030=1, '
+                else : sql+= 't1030=0, '
+                if request.POST.get('t1100', 0)=='1': sql+= 't1100=1, '
+                else : sql+= 't1100=0, '
+                if request.POST.get('t1130', 0)=='1': sql+= 't1130=1, '
+                else : sql+= 't1130=0, '
+                if request.POST.get('t1200', 0)=='1': sql+= 't1200=1, '
+                else : sql+= 't1200=0, '
+                if request.POST.get('t1230', 0)=='1': sql+= 't1230=1, '
+                else : sql+= 't1230=0, '
+                if request.POST.get('t1300', 0)=='1': sql+= 't1300=1, '
+                else : sql+= 't1300=0, '
+                if request.POST.get('t1330', 0)=='1': sql+= 't1330=1, '
+                else : sql+= 't1330=0, '
+                if request.POST.get('t1400', 0)=='1': sql+= 't1400=1, '
+                else : sql+= 't1400=0, '
+                if request.POST.get('t1430', 0)=='1': sql+= 't1430=1, '
+                else : sql+= 't1430=0, '
+                if request.POST.get('t1500', 0)=='1': sql+= 't1500=1, '
+                else : sql+= 't1500=0, '
+                if request.POST.get('t1530', 0)=='1': sql+= 't1530=1, '
+                else : sql+= 't1530=0, '
+                if request.POST.get('t1600', 0)=='1': sql+= 't1600=1, '
+                else : sql+= 't1600=0, '
+                if request.POST.get('t1630', 0)=='1': sql+= 't1630=1, '
+                else : sql+= 't1630=0, '
+                if request.POST.get('t1700', 0)=='1': sql+= 't1700=1, '
+                else : sql+= 't1700=0, '
+                if request.POST.get('t1730', 0)=='1': sql+= 't1730=1, '
+                else : sql+= 't1730=0, '
+                if request.POST.get('t1800', 0)=='1': sql+= 't1800=1, '
+                else : sql+= 't1800=0, '
+                if request.POST.get('t1830', 0)=='1': sql+= 't1830=1, '
+                else : sql+= 't1830=0, '
+                if request.POST.get('t1900', 0)=='1': sql+= 't1900=1, '
+                else : sql+= 't1900=0, '
+                if request.POST.get('t1930', 0)=='1': sql+= 't1930=1, '
+                else : sql+= 't1930=0, '
+                if request.POST.get('t2000', 0)=='1': sql+= 't2000=1, '
+                else : sql+= 't2000=0, '
+                if request.POST.get('t2030', 0)=='1': sql+= 't2030=1, '
+                else : sql+= 't2030=0, '
+                if request.POST.get('t2100', 0)=='1': sql+= 't2100=1, '
+                else : sql+= 't2100=0, '
+                if request.POST.get('t2130', 0)=='1': sql+= 't2130=1, '
+                else : sql+= 't2130=0, '
+                if request.POST.get('t2200', 0)=='1': sql+= 't2200=1, '
+                else : sql+= 't2200=0, '
+                if request.POST.get('t2230', 0)=='1': sql+= 't2230=1, '
+                else : sql+= 't2230=0, '
+                if request.POST.get('t2300', 0)=='1': sql+= 't2300=1, '
+                else : sql+= 't2300=0, '
+                if request.POST.get('t2330', 0)=='1': sql+= 't2330=1 '
+                else : sql+= 't2330=0 '
+                sql += 'where id=' + str(int(request.POST['id']))
+                request.db.execute(sql)
+                request.db.commit()
+                request.session.flash('TimerConfig saved!')
+                return HTTPFound(location=request.route_url('watering'))
+        except KeyError:
+            request.session.flash('You have to fill out everything') 
+    elif request.POST['action']=="assign":
+        if not isinstance(int(request.POST['supply']),int) or isinstance(int(request.POST['timerconfig']),int):
+            request.session.flash('This is not a valid input!')
+        else :
+            #now check if the supply exists
+            supply=int(request.POST['supply'])
+            timerconfig=float(request.POST['timerconfig'])
+            cur=request.db.cursor()
+            cur.execute('select count(*) from supplies where id = ?', [supply])
+            count=cur.fetchone()[0]
+            cur.execute('select count(*) from timerconfits where id = ?', [timerconfig])
+            count2=cur.fetchone()[0]
+            if count !=1 or count2!=1:
+                request.session.flash('Either the timer config or the water supply does not exist!')
+            else:
+                request.db.execute('insert into watering (timerconfig, supply) values (?, ?)', [timerconfig, supply])
+                request.db.commit()
+                request.session.flash('Watering setting was recorded successfully!')
+                return HTTPFound(location=request.route_url('home'))
+    cursor=request.db.cursor()
+    cursor.execute('select * from supplies where id != ?', [0])
+    supplies=cursor.fetchall()
+    cursor.execute('select * from timerconfigs')
+    timerconfigs=cursor.fetchall()
+    return {'supplies' : supplies, 'timerconfigs' : timerconfigs}
+
 @view_config(route_name='list',renderer='list.mako')
 def list_view(request):
     cursor=request.db.cursor()

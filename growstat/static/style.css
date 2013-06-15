@@ -94,3 +94,19 @@ li {
     border: solid 1px #bbbbbb;
     padding: 2px;
 }
+
+.mini {
+    width: 15px;
+}
+
+.timetable th{
+    font-size: 12px;
+}
+
+.timetable{
+    border: solid 1px black;
+}
+
+.timetable td{
+    border: solid 1px black;
+}
