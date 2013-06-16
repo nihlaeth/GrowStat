@@ -24,10 +24,11 @@ pip install ./GrowStat
 cd Growstat
 pserve development.ini
 ```
-
 If this doesn't work, create a clean virtualenv (`virtualenv myenv
 --no-site-packages`), and try installing GrowStat there and running it.
 If that also fails, the build is broken; please inform the developer.
+
+To access growstat, direct your browser to 127.0.0.1:8080 if you're accessing it locally or hostname:8080 if you are connecting remotely.
 
 ### Known-good package collection
 
@@ -43,10 +44,10 @@ To Do
 --------
 
 Recording pages:
-* add height measurement view and template
 * add harves weight view and template
 * add pic upload view and template
 * add log recording page and template
+* make watering configurations traceable over time (track changes to the settings)
 
 Edit pages:
 * All of them, including delete pages.
@@ -58,6 +59,13 @@ Data views:
 Less priority:
 * authentication system
 * backup & backup restore function
+
+Maybe fun for later:
+* notifications
+* sharing options
+* multiuser functionality
+* admin system and permissions config
+* wildcard domain support
 
 Contributors
 ------------
