@@ -494,6 +494,40 @@ def harvest_view(request):
     return {'supplies' : supplies, 'columns' : columns, 'slots' : slots, 'plants' : plants}
 
 
+@view_config(route_name='log', renderer='log.mako')
+def log_view(request):
+    if not request.method == 'POST':
+        pass
+    elif not request.POST['log'] or not request.POST['plant']:
+        request.session.flash('Both log and plant to be filled out!')
+    elif not isinstance(int(request.POST['plant']),int):
+        request.session.flash('This is not a valid plant!')
+    else :
+        #now check if the plant exists
+        plant=int(request.POST['plant'])
+        log=request.POST['log']
+        cur=request.db.cursor()
+        cur.execute('select count(*) from plants where id = ?', [plant])
+        count=cur.fetchone()[0]
+        if count !=1 :
+            request.session.flash('This plant does not exist!')
+        else:
+            request.db.execute('insert into logs (log, plant) values (?, ?)', [log, plant])
+            request.db.commit()
+            request.session.flash('Plant log was recorded successfully!')
+            return HTTPFound(location=request.route_url('home'))
+    cursor=request.db.cursor()
+    cursor.execute('select * from supplies where id != ?', [0])
+    supplies=cursor.fetchall()
+    cursor.execute('select * from columns where id !=?', [0])
+    columns=cursor.fetchall()
+    cursor.execute('select * from slots where id !=?', [0])
+    slots=cursor.fetchall()
+    cursor.execute('select * from plants where slot!=?',[0])
+    plants=cursor.fetchall()
+    return {'supplies' : supplies, 'columns' : columns, 'slots' : slots, 'plants' : plants}
+
+
 @view_config(route_name='list',renderer='list.mako')
 def list_view(request):
     cursor=request.db.cursor()
