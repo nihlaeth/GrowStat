@@ -2,3 +2,8 @@
 *.db
 *~
 *.bak
+*.jpg
+*.jpeg
+*.gif
+*.png
+*.bmp

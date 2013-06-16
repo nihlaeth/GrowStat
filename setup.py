@@ -11,6 +11,8 @@ requires = [
     'pyramid_debugtoolbar',
     'waitress',
     'pysqlite',
+    'imghdr',
+    'shutil',
     ]
 
 setup(name='GrowStat',

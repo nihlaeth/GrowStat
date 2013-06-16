@@ -1,7 +1,12 @@
 from pyramid.view import view_config
 from pyramid.session import UnencryptedCookieSessionFactoryConfig
 from pyramid.httpexceptions import HTTPFound
+import shutil
+import imghdr
+import os
 #import helpers as h
+
+here = os.path.dirname(os.path.abspath(__file__))
 
 @view_config(route_name='home', renderer='home.mako')
 def home_view(request):
@@ -525,6 +530,53 @@ def log_view(request):
             request.db.commit()
             request.session.flash('Plant log was recorded successfully!')
             return HTTPFound(location=request.route_url('home'))
+    cursor=request.db.cursor()
+    cursor.execute('select * from supplies where id != ?', [0])
+    supplies=cursor.fetchall()
+    cursor.execute('select * from columns where id !=?', [0])
+    columns=cursor.fetchall()
+    cursor.execute('select * from slots where id !=?', [0])
+    slots=cursor.fetchall()
+    cursor.execute('select * from plants where slot!=?',[0])
+    plants=cursor.fetchall()
+    return {'supplies' : supplies, 'columns' : columns, 'slots' : slots, 'plants' : plants}
+
+
+@view_config(route_name='pic', renderer='pic.mako')
+def pic_view(request):
+    if not request.method == 'POST':
+        pass
+    elif not request.POST['plant']:
+        request.session.flash('Both file and plant to be filled out!')
+    elif not isinstance(int(request.POST['plant']),int):
+        request.session.flash('This is not a valid plant!')
+    else :
+        #now check if the plant exists
+        plant=int(request.POST['plant'])
+        pic=request.POST['pic'].file
+        bitstream=pic.read()
+        #determine filetype
+        type=imghdr.what(request.POST['pic'].filename, bitstream)#when second argument is provided, the first is ignored
+        if type=='gif' or type=='bmp' or type=='jpeg' or type=='png':
+            #come up with a filename
+            file_name=os.urandom(16).encode('hex')+'.'+ type
+            path = os.path.join(here,'static/images/')
+            web_path = os.path.join( '/static/images/', file_name)
+            file_path = os.path.join( path, file_name)
+            with open(file_path, 'wb') as output_file:
+                shutil.copyfileobj(pic, output_file)
+            cur=request.db.cursor()
+            cur.execute('select count(*) from plants where id = ?', [plant])
+            count=cur.fetchone()[0]
+            if count !=1 :
+                request.session.flash('This plant does not exist!')
+            else:
+                request.db.execute('insert into pictures (path, plant) values (?, ?)', [web_path, plant])
+                request.db.commit()
+                request.session.flash('Plant pic was recorded successfully!')
+                return HTTPFound(location=request.route_url('home'))
+        else:
+            request.session.flash('Not a valid file type, only supported filetypes are jpg, bmp, png and gif!')
     cursor=request.db.cursor()
     cursor.execute('select * from supplies where id != ?', [0])
     supplies=cursor.fetchall()
