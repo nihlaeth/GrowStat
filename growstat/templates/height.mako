@@ -10,13 +10,11 @@ Plant: <select name='plant'>
             <optgroup label="${s[1]}-${c[1]}">
             % for slot in slots:
                 %if slot[2]==c[0]:
-                    <option value="${slot[0]}">${slot[1]}
-				% for plant in plants:
-					%if plant[3]==slot[0]:
-						 - ${plant[1]}
-					% endif
-				% endfor
-			</option>
+                    %for plant in plants:
+                        %if plant[3]==slot[0]:
+                            <option value="${plant[0]}">${slot[1]} - ${plant[1]}</option>
+                        % endif
+                    % endfor
                 % endif
             % endfor
         % endif
