@@ -32,6 +32,60 @@ create table if not exists plants (
     tstamp integer default (DATETIME('now'))
 );
 
+create table if not exists chtc(
+    id integer primary key autoincrement,
+    tcid integer not null,
+    tstamp integer default (DATETIME('now')),
+    t0000 bool not null default true,
+    t0030 bool not null default true,
+    t0100 bool not null default true,
+    t0130 bool not null default true,
+    t0200 bool not null default true,
+    t0230 bool not null default true,
+    t0300 bool not null default true,
+    t0330 bool not null default true,
+    t0400 bool not null default true,
+    t0430 bool not null default true,
+    t0500 bool not null default true,
+    t0530 bool not null default true,
+    t0600 bool not null default true,
+    t0630 bool not null default true,
+    t0700 bool not null default true,
+    t0730 bool not null default true,
+    t0800 bool not null default true,
+    t0830 bool not null default true,
+    t0900 bool not null default true,
+    t0930 bool not null default true,
+    t1000 bool not null default true,
+    t1030 bool not null default true,
+    t1100 bool not null default true,
+    t1130 bool not null default true,
+    t1200 bool not null default true,
+    t1230 bool not null default true,
+    t1300 bool not null default true,
+    t1330 bool not null default true,
+    t1400 bool not null default true,
+    t1430 bool not null default true,
+    t1500 bool not null default true,
+    t1530 bool not null default true,
+    t1600 bool not null default true,
+    t1630 bool not null default true,
+    t1700 bool not null default true,
+    t1730 bool not null default true,
+    t1800 bool not null default true,
+    t1830 bool not null default true,
+    t1900 bool not null default true,
+    t1930 bool not null default true,
+    t2000 bool not null default true,
+    t2030 bool not null default true,
+    t2100 bool not null default true,
+    t2130 bool not null default true,
+    t2200 bool not null default true,
+    t2230 bool not null default true,
+    t2300 bool not null default true,
+    t2330 bool not null default true
+);
+
 create table if not exists timerconfigs (
     id integer primary key autoincrement,
     name char(100) not null,
@@ -111,7 +165,8 @@ create table if not exists harvest (
     id integer primary key autoincrement,
     tstamp integer default (DATETIME('now')),
     plant integer not null,
-    weight decimal not null
+    weight decimal not null,
+    type char(20)
 );
 
 create table if not exists height (
