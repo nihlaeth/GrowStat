@@ -44,9 +44,7 @@ To Do
 --------
 
 Recording pages:
-* add harves weight view and template
 * add pic upload view and template
-* add log recording page and template
 * make watering configurations traceable over time (track changes to the settings)
 
 Edit pages:
@@ -59,8 +57,10 @@ Data views:
 Less priority:
 * authentication system
 * backup & backup restore function
+* lumen tracking and analysis
 
-Maybe fun for later:
+Maybe for later:
+* migrate to a database that doesn't suck
 * notifications
 * sharing options
 * multiuser functionality
