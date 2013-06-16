@@ -339,13 +339,13 @@ ${s[1]}
 </td>
 <td>
 <select name="timerconfig">
-	% for c in timerconfigs :
-		<option value="${c[0]}"
-		% if water.get(str(s[0]),{}).get('tc',-1)==c[0]:
-			selected="selected"
-		% endif
-		>${c[1]}</option>
-	% endfor
+    % for c in timerconfigs :
+        <option value="${c[0]}"
+        % if water.get(str(s[0]),{}).get('tc',-1)==c[0]:
+            selected="selected"
+        % endif
+        >${c[1]}</option>
+    % endfor
 </select>
 </td>
 <td>

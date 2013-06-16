@@ -12,12 +12,12 @@ Slot: <select name='slot'>
             % for slot in slots:
                 %if slot[2]==c[0]:
                     <option value="${slot[0]}">${slot[1]}
-				 % for plant in plants:
-                                        %if plant[3]==slot[0]:
-                                                 - ${plant[1]}
-                                        % endif
-                                % endfor
-			</option>
+                    % for plant in plants:
+                        %if plant[3]==slot[0]:
+                            - ${plant[1]}
+                        % endif
+                    % endfor
+                    </option>
                 % endif
             % endfor
         % endif
