@@ -44,7 +44,7 @@ To Do
 --------
 
 Recording pages:
-* add pic upload view and template
+* Lumen tracking capabilites
 
 Edit pages:
 * All of them, including delete pages.
@@ -57,7 +57,6 @@ Less priority:
 * front page statistics
 * authentication system
 * backup & backup restore function
-* lumen tracking and analysis
 
 Maybe for later:
 * migrate to a database that doesn't suck
