@@ -422,7 +422,7 @@ def watering_view(request):
         except KeyError:
             request.session.flash('You have to fill out everything') 
     elif request.POST['action']=="assign":
-        if not isinstance(int(request.POST['supply']),int) or isinstance(int(request.POST['timerconfig']),int):
+        if not isinstance(int(request.POST['supply']),int) or not isinstance(int(request.POST['timerconfig']),int):
             request.session.flash('This is not a valid input!')
         else :
             #now check if the supply exists
@@ -431,7 +431,7 @@ def watering_view(request):
             cur=request.db.cursor()
             cur.execute('select count(*) from supplies where id = ?', [supply])
             count=cur.fetchone()[0]
-            cur.execute('select count(*) from timerconfits where id = ?', [timerconfig])
+            cur.execute('select count(*) from timerconfigs where id = ?', [timerconfig])
             count2=cur.fetchone()[0]
             if count !=1 or count2!=1:
                 request.session.flash('Either the timer config or the water supply does not exist!')
@@ -445,7 +445,15 @@ def watering_view(request):
     supplies=cursor.fetchall()
     cursor.execute('select * from timerconfigs')
     timerconfigs=cursor.fetchall()
-    return {'supplies' : supplies, 'timerconfigs' : timerconfigs}
+    cursor.execute('select * from watering')
+    watering=cursor.fetchall()
+    water={}
+    for w in watering:
+        if water.get(str(w[2]),{}).get('t',0)<w[1]:
+            water[str(w[2])]={}
+            water[str(w[2])]['tc']=w[3]
+            water[str(w[2])]['t']=w[1]
+    return {'supplies' : supplies, 'timerconfigs' : timerconfigs, 'water': water}
 
 @view_config(route_name='list',renderer='list.mako')
 def list_view(request):
