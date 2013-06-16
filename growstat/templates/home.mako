@@ -30,6 +30,6 @@ Here are some stats to cheer you up:<br />
 </td>
 <tr>
     <td>Average Humidity</td>
-    <td>${averagehum}</td>
+    <td>${averagehum}%</td>
 </tr>
 </table>

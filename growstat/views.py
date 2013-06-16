@@ -10,7 +10,41 @@ here = os.path.dirname(os.path.abspath(__file__))
 
 @view_config(route_name='home', renderer='home.mako')
 def home_view(request):
-    return {'totalharvest': 0, 'totalgrowth': 0, 'totalliveplants': 0, 'averageph': 7, 'averageec': 3, 'averagetemp': 23, 'averagehum': 50}
+    cursor=request.db.cursor()
+    cursor.execute('select sum(weight) from harvest')
+    totalharvest=cursor.fetchone()[0]/1000
+    #this one is complicated, can't just add everything up and plants get shorter after harvest sometimes
+    cursor.execute('select * from height order by tstamp asc')
+    heights=cursor.fetchall()
+    totalgrowth=0
+    growth={}
+    for record in heights:
+        last=growth.get(str(record[2]),{}).get('last',0)
+        g=growth.get(str(record[2]),{}).get('growth',0)
+        diff=float(record[3])-last
+        try:
+            growth[str(record[2])]['last']=record[3]
+        except KeyError:
+            growth[str(record[2])]={}
+            growth[str(record[2])]['last']=record[3]
+        if diff>=0:
+            #plant has grown, not shrunken
+            growth[str(record[2])]['growth']=g+diff
+    for plant in growth:
+        totalgrowth+=growth[str(plant)]['growth']
+    totalgrowth=totalgrowth/100
+    cursor.execute('select * from plants where slot!=0')
+    totalliveplants=cursor.fetchone()[0]
+    cursor.execute('select avg(ph) from ph')
+    averageph=cursor.fetchone()[0]
+    cursor.execute('select avg(ec) from ec')
+    averageec=cursor.fetchone()[0]
+    cursor.execute('select avg(temp) from temp')
+    averagetemp=cursor.fetchone()[0]
+    cursor.execute('select avg(humidity) from humidity')
+    averagehumidity=cursor.fetchone()[0]
+    return {'totalharvest': totalharvest, 'totalgrowth': totalgrowth, 'totalliveplants': totalliveplants, \
+    'averageph': averageph, 'averageec': averageec, 'averagetemp': averagetemp, 'averagehum': averagehumidity}
 
 @view_config(route_name='addsupply', renderer='addsupply.mako')
 def addsupply_view(request):
