@@ -54,7 +54,6 @@ Data views:
 * add useful analytic pages
 
 Less priority:
-* front page statistics
 * authentication system
 * backup & backup restore function
 
