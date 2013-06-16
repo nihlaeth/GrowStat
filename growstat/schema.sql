@@ -1,7 +1,7 @@
 create table if not exists supplies (
     id integer primary key autoincrement,
     name char(100) not null,
-    tstamp integer default now
+    tstamp integer default (DATETIME('now'))
 );
 
 insert or ignore into supplies (id, name) values (0, 'Dead');
@@ -10,7 +10,7 @@ create table if not exists columns (
     id integer primary key autoincrement,
     name char(100) not null,
     supply integer not null,
-    tstamp integer default now
+    tstamp integer default (DATETIME('now'))
 );
 
 insert or ignore into columns (id, name, supply) values (0, 'Dead', 0);
@@ -19,7 +19,7 @@ create table if not exists slots (
     id integer primary key autoincrement,
     name char(100) not null,
     col interger not null,
-    tstamp integer default now
+    tstamp integer default (DATETIME('now'))
 );
 
 insert or ignore into slots (id, name, col) values (0, 'Dead', 0);
@@ -29,7 +29,7 @@ create table if not exists plants (
     name char(100) not null,
     lname char(100) not null,
     slot integer not null,
-    tstamp integer default now
+    tstamp integer default (DATETIME('now'))
 );
 
 create table if not exists timerconfigs (
@@ -83,75 +83,75 @@ create table if not exists timerconfigs (
     t2230 bool not null default true,
     t2300 bool not null default true,
     t2330 bool not null default true,
-    tstamp integer default now
+    tstamp integer default (DATETIME('now'))
 );
 
 create table if not exists ph (
     id integer primary key autoincrement,
-    tstamp integer default now,
+    tstamp integer default (DATETIME('now')),
     supply integer not null,
     ph decimal not null
 );
 
 create table if not exists ec (
     id integer primary key autoincrement,
-    tstamp integer default now,
+    tstamp integer default (DATETIME('now')),
     supply integer not null,
     ec decimal not null
 );
 
 create table if not exists temp (
     id integer primary key autoincrement,
-    tstamp integer default now,
+    tstamp integer default (DATETIME('now')),
     supply integer not null,
     temp decimal not null
 );
 
 create table if not exists harvest (
     id integer primary key autoincrement,
-    tstamp integer default now,
+    tstamp integer default (DATETIME('now')),
     plant integer not null,
     weight decimal not null
 );
 
 create table if not exists height (
     id integer primary key autoincrement,
-    tstamp integer default now,
+    tstamp integer default (DATETIME('now')),
     plant integer not null,
     height decimal not null
 );
 
 create table if not exists pictures (
     id integer primary key autoincrement,
-    tstamp integer default now,
+    tstamp integer default (DATETIME('now')),
     plant integer not null,
     path char(200) not null
 );
 
 create table if not exists logs (
     id integer primary key autoincrement,
-    tstamp integer default now,
+    tstamp integer default (DATETIME('now')),
     plant integer not null,
     log text not null
 );
 
 create table if not exists watering (
     id integer primary key autoincrement,
-    tstamp integer default now,
+    tstamp integer default (DATETIME('now')),
     supply integer not null,
     timerconfig integer not null
 );
 
 create table if not exists water (
     id integer primary key autoincrement,
-    tstamp integer default now,
+    tstamp integer default (DATETIME('now')),
     supply integer not null,
     volume decimal not null
 );
 
 create table if not exists nutrients (
     id integer primary key autoincrement,
-    tstamp integer default now,
+    tstamp integer default (DATETIME('now')),
     supply integer not null,
     name char(200) not null,
     amount decimal not null,
@@ -160,14 +160,14 @@ create table if not exists nutrients (
 
 create table if not exists movements (
     id integer primary key autoincrement,
-    tstamp integer default now,
+    tstamp integer default (DATETIME('now')),
     plant integer not null,
     slot integer not null
 );
 
 create table if not exists humidity (
     id integer primary key autoincrement,
-    tstamp integer default now,
+    tstamp integer default (DATETIME('now')),
     humidity decimal not null
 );
 
