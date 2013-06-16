@@ -455,6 +455,45 @@ def watering_view(request):
             water[str(w[2])]['t']=w[1]
     return {'supplies' : supplies, 'timerconfigs' : timerconfigs, 'water': water}
 
+
+
+@view_config(route_name='harvest', renderer='harvest.mako')
+def harvest_view(request):
+    if not request.method == 'POST':
+        pass
+    elif not request.POST['harvest'] or not request.POST['plant']:
+        request.session.flash('Both harvest and plant to be filled out!')
+    elif not isinstance(float(request.POST['harvest']),float):
+        request.session.flash('Weight must be numerical!')
+    elif not isinstance(int(request.POST['plant']),int):
+        request.session.flash('This is not a valid plant!')
+    else :
+        #now check if the plant exists
+        plant=int(request.POST['plant'])
+        harvest=float(request.POST['harvest'])
+        type=str(request.POST.get('type','Fruit'))
+        cur=request.db.cursor()
+        cur.execute('select count(*) from plants where id = ?', [plant])
+        count=cur.fetchone()[0]
+        if count !=1 :
+            request.session.flash('This plant does not exist!')
+        else:
+            request.db.execute('insert into harvest (weight, plant, type) values (?, ?, ?)', [harvest, plant, type])
+            request.db.commit()
+            request.session.flash('Plant harvest was recorded successfully!')
+            return HTTPFound(location=request.route_url('home'))
+    cursor=request.db.cursor()
+    cursor.execute('select * from supplies where id != ?', [0])
+    supplies=cursor.fetchall()
+    cursor.execute('select * from columns where id !=?', [0])
+    columns=cursor.fetchall()
+    cursor.execute('select * from slots where id !=?', [0])
+    slots=cursor.fetchall()
+    cursor.execute('select * from plants where slot!=?',[0])
+    plants=cursor.fetchall()
+    return {'supplies' : supplies, 'columns' : columns, 'slots' : slots, 'plants' : plants}
+
+
 @view_config(route_name='list',renderer='list.mako')
 def list_view(request):
     cursor=request.db.cursor()
