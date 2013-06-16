@@ -1,7 +1,7 @@
 <%inherit file='base.mako' />
 <h2>Record Height Value</h2>
 <form name="Height" action="${request.route_url('height')}" method="POST">
-Height: <input type="text" name="height" /><br />
+Height: <input type="text" name="height" />cm<br />
 
 Plant: <select name='plant'>
 % for s in supplies:
