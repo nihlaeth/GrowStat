@@ -45,7 +45,6 @@ To Do
 
 Recording pages:
 * add pic upload view and template
-* make watering configurations traceable over time (track changes to the settings)
 
 Edit pages:
 * All of them, including delete pages.
@@ -55,6 +54,7 @@ Data views:
 * add useful analytic pages
 
 Less priority:
+* front page statistics
 * authentication system
 * backup & backup restore function
 * lumen tracking and analysis
