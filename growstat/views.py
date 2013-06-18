@@ -6,7 +6,21 @@ import imghdr
 import os
 #import helpers as h
 
+import logging
+log = logging.getLogger(__name__)
+
 here = os.path.dirname(os.path.abspath(__file__))
+TIMES = [
+        "0000", "0030", "0100", "0130", "0200", "0230",
+        "0300", "0330", "0400", "0430", "0500", "0530",
+        "0600", "0630", "0700", "0730", "0800", "0830",
+        "0900", "0930", "1000", "1030", "1100", "1130",
+        "1200", "1230", "1300", "1330", "1400", "1430",
+        "1500", "1530", "1600", "1630", "1700", "1730",
+        "1800", "1830", "1900", "1930", "2000", "2030",
+        "2100", "2130", "2200", "2230", "2300", "2330"]
+
+TIMES_T = ['t' + time for time in TIMES]
 
 @view_config(route_name='home', renderer='home.mako')
 def home_view(request):
@@ -165,7 +179,6 @@ def ph_view(request):
     #    request.session.flash('Flash still works!')
     return {'supplies' : supplies}
 
-
 @view_config(route_name='ec', renderer='ec.mako')
 def ec_view(request):
     if not request.method == 'POST':
@@ -299,7 +312,6 @@ def nutrients_view(request):
     supplies=cursor.fetchall()
     return {'supplies' : supplies}
 
-
 @view_config(route_name='height', renderer='height.mako')
 def height_view(request):
     if not request.method == 'POST':
@@ -335,6 +347,150 @@ def height_view(request):
     plants=cursor.fetchall()
     return {'supplies' : supplies, 'columns' : columns, 'slots' : slots, 'plants' : plants}
 
+# Helper function to produce SQL statement for use of watering view
+# (Nihlaeth's old code, split into separate function)
+def make_watering_sql_old(ID):
+    sql = 'update timerconfigs set '
+
+    sql2 = 'insert into chtc (tcid,t0000,t0030,t0100,t0130,t0200,t0230,t0300,t0330,'
+    sql2+='t0400,t0430,t0500,t0530,t0600,t0630,t0700,t0730,t0800,t0830,t0900,t0930,'
+    sql2+='t1000,t1030,t1100,t1130,t1200,t1230,t1300,t1330,t1400,t1430,t1500,t1530,'
+    sql2+='t1600,t1630,t1700,t1730,t1800,t1830,t1900,t1930,t2000,t2030,t2100,t2130,'
+    sql2+='t2200,t2230,t2300,t2330) values (' + ID + ','
+
+    sql2 = 'insert into chtc (tcid, {times}) values ({int}, ' +
+        ",".join(TIMES_T),
+      
+    if request.POST.get('t0000', 0)=='1': 
+        sql+= 't0000=1, '; sql2+= '1,'
+    else : 
+        sql+= 't0000=0, '; sql2+= '0,'
+    if request.POST.get('t0030', 0)=='1': sql+= 't0030=1, '; sql2+= '1,'
+    else : sql+= 't0030=0, '; sql2+= '0,'
+    if request.POST.get('t0100', 0)=='1': sql+= 't0100=1, '; sql2+= '1,'
+    else : sql+= 't0100=0, '; sql2+= '0,'
+    if request.POST.get('t0130', 0)=='1': sql+= 't0130=1, '; sql2+= '1,'
+    else : sql+= 't0130=0, '; sql2+= '0,'
+    if request.POST.get('t0200', 0)=='1': sql+= 't0200=1, '; sql2+= '1,'
+    else : sql+= 't0200=0, '; sql2+= '0,'
+    if request.POST.get('t0230', 0)=='1': sql+= 't0230=1, '; sql2+= '1,'
+    else : sql+= 't0230=0, '; sql2+= '0,'
+    if request.POST.get('t0300', 0)=='1': sql+= 't0300=1, '; sql2+= '1,'
+    else : sql+= 't0300=0, '; sql2+= '0,'
+    if request.POST.get('t0330', 0)=='1': sql+= 't0330=1, '; sql2+= '1,'
+    else : sql+= 't0330=0, '; sql2+= '0,'
+    if request.POST.get('t0400', 0)=='1': sql+= 't0400=1, '; sql2+= '1,'
+    else : sql+= 't0400=0, '; sql2+= '0,'
+    if request.POST.get('t0430', 0)=='1': sql+= 't0430=1, '; sql2+= '1,'
+    else : sql+= 't0430=0, '; sql2+= '0,'
+    if request.POST.get('t0500', 0)=='1': sql+= 't0500=1, '; sql2+= '1,'
+    else : sql+= 't0500=0, '; sql2+= '0,'
+    if request.POST.get('t0530', 0)=='1': sql+= 't0530=1, '; sql2+= '1,'
+    else : sql+= 't0530=0, '; sql2+= '0,'
+    if request.POST.get('t0600', 0)=='1': sql+= 't0600=1, '; sql2+= '1,'
+    else : sql+= 't0600=0, '; sql2+= '0,'
+    if request.POST.get('t0630', 0)=='1': sql+= 't0630=1, '; sql2+= '1,'
+    else : sql+= 't0630=0, '; sql2+= '0,'
+    if request.POST.get('t0700', 0)=='1': sql+= 't0700=1, '; sql2+= '1,'
+    else : sql+= 't0700=0, '; sql2+= '0,'
+    if request.POST.get('t0730', 0)=='1': sql+= 't0730=1, '; sql2+= '1,'
+    else : sql+= 't0730=0, '; sql2+= '0,'
+    if request.POST.get('t0800', 0)=='1': sql+= 't0800=1, '; sql2+= '1,'
+    else : sql+= 't0800=0, '; sql2+= '0,'
+    if request.POST.get('t0830', 0)=='1': sql+= 't0830=1, '; sql2+= '1,'
+    else : sql+= 't0830=0, '; sql2+= '0,'
+    if request.POST.get('t0900', 0)=='1': sql+= 't0900=1, '; sql2+= '1,'
+    else : sql+= 't0900=0, '; sql2+= '0,'
+    if request.POST.get('t0930', 0)=='1': sql+= 't0930=1, '; sql2+= '1,'
+    else : sql+= 't0930=0, '; sql2+= '0,'
+    if request.POST.get('t1000', 0)=='1': sql+= 't1000=1, '; sql2+= '1,'
+    else : sql+= 't1000=0, '; sql2+= '0,'
+    if request.POST.get('t1030', 0)=='1': sql+= 't1030=1, '; sql2+= '1,'
+    else : sql+= 't1030=0, '; sql2+= '0,'
+    if request.POST.get('t1100', 0)=='1': sql+= 't1100=1, '; sql2+= '1,'
+    else : sql+= 't1100=0, '; sql2+= '0,'
+    if request.POST.get('t1130', 0)=='1': sql+= 't1130=1, '; sql2+= '1,'
+    else : sql+= 't1130=0, '; sql2+= '0,'
+    if request.POST.get('t1200', 0)=='1': sql+= 't1200=1, '; sql2+= '1,'
+    else : sql+= 't1200=0, '; sql2+= '0,'
+    if request.POST.get('t1230', 0)=='1': sql+= 't1230=1, '; sql2+= '1,'
+    else : sql+= 't1230=0, '; sql2+= '0,'
+    if request.POST.get('t1300', 0)=='1': sql+= 't1300=1, '; sql2+= '1,'
+    else : sql+= 't1300=0, '; sql2+= '0,'
+    if request.POST.get('t1330', 0)=='1': sql+= 't1330=1, '; sql2+= '1,'
+    else : sql+= 't1330=0, '; sql2+= '0,'
+    if request.POST.get('t1400', 0)=='1': sql+= 't1400=1, '; sql2+= '1,'
+    else : sql+= 't1400=0, '; sql2+= '0,'
+    if request.POST.get('t1430', 0)=='1': sql+= 't1430=1, '; sql2+= '1,'
+    else : sql+= 't1430=0, '; sql2+= '0,'
+    if request.POST.get('t1500', 0)=='1': sql+= 't1500=1, '; sql2+= '1,'
+    else : sql+= 't1500=0, '; sql2+= '0,'
+    if request.POST.get('t1530', 0)=='1': sql+= 't1530=1, '; sql2+= '1,'
+    else : sql+= 't1530=0, '; sql2+= '0,'
+    if request.POST.get('t1600', 0)=='1': sql+= 't1600=1, '; sql2+= '1,'
+    else : sql+= 't1600=0, '; sql2+= '0,'
+    if request.POST.get('t1630', 0)=='1': sql+= 't1630=1, '; sql2+= '1,'
+    else : sql+= 't1630=0, '; sql2+= '0,'
+    if request.POST.get('t1700', 0)=='1': sql+= 't1700=1, '; sql2+= '1,'
+    else : sql+= 't1700=0, '; sql2+= '0,'
+    if request.POST.get('t1730', 0)=='1': sql+= 't1730=1, '; sql2+= '1,'
+    else : sql+= 't1730=0, '; sql2+= '0,'
+    if request.POST.get('t1800', 0)=='1': sql+= 't1800=1, '; sql2+= '1,'
+    else : sql+= 't1800=0, '; sql2+= '0,'
+    if request.POST.get('t1830', 0)=='1': sql+= 't1830=1, '; sql2+= '1,'
+    else : sql+= 't1830=0, '; sql2+= '0,'
+    if request.POST.get('t1900', 0)=='1': sql+= 't1900=1, '; sql2+= '1,'
+    else : sql+= 't1900=0, '; sql2+= '0,'
+    if request.POST.get('t1930', 0)=='1': sql+= 't1930=1, '; sql2+= '1,'
+    else : sql+= 't1930=0, '; sql2+= '0,'
+    if request.POST.get('t2000', 0)=='1': sql+= 't2000=1, '; sql2+= '1,'
+    else : sql+= 't2000=0, '; sql2+= '0,'
+    if request.POST.get('t2030', 0)=='1': sql+= 't2030=1, '; sql2+= '1,'
+    else : sql+= 't2030=0, '; sql2+= '0,'
+    if request.POST.get('t2100', 0)=='1': sql+= 't2100=1, '; sql2+= '1,'
+    else : sql+= 't2100=0, '; sql2+= '0,'
+    if request.POST.get('t2130', 0)=='1': sql+= 't2130=1, '; sql2+= '1,'
+    else : sql+= 't2130=0, '; sql2+= '0,'
+    if request.POST.get('t2200', 0)=='1': sql+= 't2200=1, '; sql2+= '1,'
+    else : sql+= 't2200=0, '; sql2+= '0,'
+    if request.POST.get('t2230', 0)=='1': sql+= 't2230=1, '; sql2+= '1,'
+    else : sql+= 't2230=0, '; sql2+= '0,'
+    if request.POST.get('t2300', 0)=='1': sql+= 't2300=1, '; sql2+= '1,'
+    else : sql+= 't2300=0, '; sql2+= '0,'
+    if request.POST.get('t2330', 0)=='1': sql+= 't2330=1 '; sql2+= '1'
+    else : sql+= 't2330=0 '; sql2+= '0'
+    sql += 'where id=' + ID
+    sql2 +=')'
+    return sql, sql2
+
+# Helper function to produce SQL statement for use of watering view
+# (Sietse's refactoring)
+def make_watering_sql_new(ID)
+    # First collect the bits and bobs of the SQL statements
+    # Initialize lists, then grow them. (Using map() would work, too,
+    # except python doesn't support two-line lambdas.)
+    values = []       # collection of [1, 0, ...]
+    assignments = []  # collection of ['t0000=1', 't0030=0', ...]
+    for time_i in TIMES_T:
+        val = int(request.POST.get(time_i, 0) == 1)
+        values.append(val)
+        assignments.append('{0}={1}'.format(time_i, val))
+
+    # Next, create the SQL statements
+    sql = ('update timerconfigs set {assignments} where id={ID}').format(
+            assignments = assignments, 
+            ID = ID)
+    # Implicit string continuation is brilliant: consecutive string
+    # literals in one statement (no comma in between!) get concatenated
+    # automatically.
+    # str.format is excellent, too.
+    sql = ('insert ' 
+           'into chtc (tcid, {times}) '
+           'values ({ID}, {values})').format(
+                   times = ", ".join(TIMES_T),
+                   ID = ID,
+                   values = values)
+    return sql, sql2
 
 @view_config(route_name='watering', renderer='watering.mako')
 def watering_view(request):
@@ -358,110 +514,15 @@ def watering_view(request):
             if not isinstance(int(request.POST['id']),int):
                 request.session.flash('This is not valid input!')
             else:
-                sql = 'update timerconfigs set '
-                sql2 = 'insert into chtc (tcid,t0000,t0030,t0100,t0130,t0200,t0230,t0300,t0330,'
-                sql2+='t0400,t0430,t0500,t0530,t0600,t0630,t0700,t0730,t0800,t0830,t0900,t0930,'
-                sql2+='t1000,t1030,t1100,t1130,t1200,t1230,t1300,t1330,t1400,t1430,t1500,t1530,'
-                sql2+='t1600,t1630,t1700,t1730,t1800,t1830,t1900,t1930,t2000,t2030,t2100,t2130,'
-                sql2+='t2200,t2230,t2300,t2330) values ('+str(int(request.POST['id']))+','
-                if request.POST.get('t0000', 0)=='1': sql+= 't0000=1, '; sql2+= '1,'
-                else : sql+= 't0000=0, '; sql2+= '0,'
-                if request.POST.get('t0030', 0)=='1': sql+= 't0030=1, '; sql2+= '1,'
-                else : sql+= 't0030=0, '; sql2+= '0,'
-                if request.POST.get('t0100', 0)=='1': sql+= 't0100=1, '; sql2+= '1,'
-                else : sql+= 't0100=0, '; sql2+= '0,'
-                if request.POST.get('t0130', 0)=='1': sql+= 't0130=1, '; sql2+= '1,'
-                else : sql+= 't0130=0, '; sql2+= '0,'
-                if request.POST.get('t0200', 0)=='1': sql+= 't0200=1, '; sql2+= '1,'
-                else : sql+= 't0200=0, '; sql2+= '0,'
-                if request.POST.get('t0230', 0)=='1': sql+= 't0230=1, '; sql2+= '1,'
-                else : sql+= 't0230=0, '; sql2+= '0,'
-                if request.POST.get('t0300', 0)=='1': sql+= 't0300=1, '; sql2+= '1,'
-                else : sql+= 't0300=0, '; sql2+= '0,'
-                if request.POST.get('t0330', 0)=='1': sql+= 't0330=1, '; sql2+= '1,'
-                else : sql+= 't0330=0, '; sql2+= '0,'
-                if request.POST.get('t0400', 0)=='1': sql+= 't0400=1, '; sql2+= '1,'
-                else : sql+= 't0400=0, '; sql2+= '0,'
-                if request.POST.get('t0430', 0)=='1': sql+= 't0430=1, '; sql2+= '1,'
-                else : sql+= 't0430=0, '; sql2+= '0,'
-                if request.POST.get('t0500', 0)=='1': sql+= 't0500=1, '; sql2+= '1,'
-                else : sql+= 't0500=0, '; sql2+= '0,'
-                if request.POST.get('t0530', 0)=='1': sql+= 't0530=1, '; sql2+= '1,'
-                else : sql+= 't0530=0, '; sql2+= '0,'
-                if request.POST.get('t0600', 0)=='1': sql+= 't0600=1, '; sql2+= '1,'
-                else : sql+= 't0600=0, '; sql2+= '0,'
-                if request.POST.get('t0630', 0)=='1': sql+= 't0630=1, '; sql2+= '1,'
-                else : sql+= 't0630=0, '; sql2+= '0,'
-                if request.POST.get('t0700', 0)=='1': sql+= 't0700=1, '; sql2+= '1,'
-                else : sql+= 't0700=0, '; sql2+= '0,'
-                if request.POST.get('t0730', 0)=='1': sql+= 't0730=1, '; sql2+= '1,'
-                else : sql+= 't0730=0, '; sql2+= '0,'
-                if request.POST.get('t0800', 0)=='1': sql+= 't0800=1, '; sql2+= '1,'
-                else : sql+= 't0800=0, '; sql2+= '0,'
-                if request.POST.get('t0830', 0)=='1': sql+= 't0830=1, '; sql2+= '1,'
-                else : sql+= 't0830=0, '; sql2+= '0,'
-                if request.POST.get('t0900', 0)=='1': sql+= 't0900=1, '; sql2+= '1,'
-                else : sql+= 't0900=0, '; sql2+= '0,'
-                if request.POST.get('t0930', 0)=='1': sql+= 't0930=1, '; sql2+= '1,'
-                else : sql+= 't0930=0, '; sql2+= '0,'
-                if request.POST.get('t1000', 0)=='1': sql+= 't1000=1, '; sql2+= '1,'
-                else : sql+= 't1000=0, '; sql2+= '0,'
-                if request.POST.get('t1030', 0)=='1': sql+= 't1030=1, '; sql2+= '1,'
-                else : sql+= 't1030=0, '; sql2+= '0,'
-                if request.POST.get('t1100', 0)=='1': sql+= 't1100=1, '; sql2+= '1,'
-                else : sql+= 't1100=0, '; sql2+= '0,'
-                if request.POST.get('t1130', 0)=='1': sql+= 't1130=1, '; sql2+= '1,'
-                else : sql+= 't1130=0, '; sql2+= '0,'
-                if request.POST.get('t1200', 0)=='1': sql+= 't1200=1, '; sql2+= '1,'
-                else : sql+= 't1200=0, '; sql2+= '0,'
-                if request.POST.get('t1230', 0)=='1': sql+= 't1230=1, '; sql2+= '1,'
-                else : sql+= 't1230=0, '; sql2+= '0,'
-                if request.POST.get('t1300', 0)=='1': sql+= 't1300=1, '; sql2+= '1,'
-                else : sql+= 't1300=0, '; sql2+= '0,'
-                if request.POST.get('t1330', 0)=='1': sql+= 't1330=1, '; sql2+= '1,'
-                else : sql+= 't1330=0, '; sql2+= '0,'
-                if request.POST.get('t1400', 0)=='1': sql+= 't1400=1, '; sql2+= '1,'
-                else : sql+= 't1400=0, '; sql2+= '0,'
-                if request.POST.get('t1430', 0)=='1': sql+= 't1430=1, '; sql2+= '1,'
-                else : sql+= 't1430=0, '; sql2+= '0,'
-                if request.POST.get('t1500', 0)=='1': sql+= 't1500=1, '; sql2+= '1,'
-                else : sql+= 't1500=0, '; sql2+= '0,'
-                if request.POST.get('t1530', 0)=='1': sql+= 't1530=1, '; sql2+= '1,'
-                else : sql+= 't1530=0, '; sql2+= '0,'
-                if request.POST.get('t1600', 0)=='1': sql+= 't1600=1, '; sql2+= '1,'
-                else : sql+= 't1600=0, '; sql2+= '0,'
-                if request.POST.get('t1630', 0)=='1': sql+= 't1630=1, '; sql2+= '1,'
-                else : sql+= 't1630=0, '; sql2+= '0,'
-                if request.POST.get('t1700', 0)=='1': sql+= 't1700=1, '; sql2+= '1,'
-                else : sql+= 't1700=0, '; sql2+= '0,'
-                if request.POST.get('t1730', 0)=='1': sql+= 't1730=1, '; sql2+= '1,'
-                else : sql+= 't1730=0, '; sql2+= '0,'
-                if request.POST.get('t1800', 0)=='1': sql+= 't1800=1, '; sql2+= '1,'
-                else : sql+= 't1800=0, '; sql2+= '0,'
-                if request.POST.get('t1830', 0)=='1': sql+= 't1830=1, '; sql2+= '1,'
-                else : sql+= 't1830=0, '; sql2+= '0,'
-                if request.POST.get('t1900', 0)=='1': sql+= 't1900=1, '; sql2+= '1,'
-                else : sql+= 't1900=0, '; sql2+= '0,'
-                if request.POST.get('t1930', 0)=='1': sql+= 't1930=1, '; sql2+= '1,'
-                else : sql+= 't1930=0, '; sql2+= '0,'
-                if request.POST.get('t2000', 0)=='1': sql+= 't2000=1, '; sql2+= '1,'
-                else : sql+= 't2000=0, '; sql2+= '0,'
-                if request.POST.get('t2030', 0)=='1': sql+= 't2030=1, '; sql2+= '1,'
-                else : sql+= 't2030=0, '; sql2+= '0,'
-                if request.POST.get('t2100', 0)=='1': sql+= 't2100=1, '; sql2+= '1,'
-                else : sql+= 't2100=0, '; sql2+= '0,'
-                if request.POST.get('t2130', 0)=='1': sql+= 't2130=1, '; sql2+= '1,'
-                else : sql+= 't2130=0, '; sql2+= '0,'
-                if request.POST.get('t2200', 0)=='1': sql+= 't2200=1, '; sql2+= '1,'
-                else : sql+= 't2200=0, '; sql2+= '0,'
-                if request.POST.get('t2230', 0)=='1': sql+= 't2230=1, '; sql2+= '1,'
-                else : sql+= 't2230=0, '; sql2+= '0,'
-                if request.POST.get('t2300', 0)=='1': sql+= 't2300=1, '; sql2+= '1,'
-                else : sql+= 't2300=0, '; sql2+= '0,'
-                if request.POST.get('t2330', 0)=='1': sql+= 't2330=1 '; sql2+= '1'
-                else : sql+= 't2330=0 '; sql2+= '0'
-                sql += 'where id=' + str(int(request.POST['id']))
-                sql2 +=')'
+                # Create the SQL statements (code factored out)
+                # FIXME what type is request.POST['id']? 
+                # str(int(...)) seems redundant.
+                ID = str(int(request.POST['id']))
+                sql, sql2 = make_watering_sql_new(ID)
+                sqlo, sql2o = make_watering_sql_old(ID)
+                # TODO test whether sql == sqlo before switching to
+                # refactored version.
+
                 request.db.execute(sql)
                 request.db.execute(sql2)
                 request.db.commit()
@@ -502,7 +563,6 @@ def watering_view(request):
             water[str(w[2])]['tc']=w[3]
             water[str(w[2])]['t']=w[1]
     return {'supplies' : supplies, 'timerconfigs' : timerconfigs, 'water': water}
-
 
 
 @view_config(route_name='harvest', renderer='harvest.mako')
