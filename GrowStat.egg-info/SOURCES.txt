@@ -14,7 +14,6 @@ GrowStat.egg-info/top_level.txt
 growstat/__init__.py
 growstat/helpers.py
 growstat/schema.sql
-growstat/tests.py
 growstat/views.py
 growstat/static/favicon.ico
 growstat/static/footerbg.png
@@ -46,4 +45,10 @@ growstat/templates/ph.mako
 growstat/templates/pic.mako
 growstat/templates/temp.mako
 growstat/templates/water.mako
+<<<<<<< HEAD
 growstat/templates/watering.mako
+=======
+growstat/templates/watering.mako
+growstat/tests/__init__.py
+growstat/tests/test_pages.py
+>>>>>>> Add tests

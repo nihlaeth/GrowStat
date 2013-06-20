@@ -2,3 +2,4 @@ pyramid
 pyramid_debugtoolbar
 waitress
 pysqlite
+webtest
