@@ -45,10 +45,6 @@ growstat/templates/ph.mako
 growstat/templates/pic.mako
 growstat/templates/temp.mako
 growstat/templates/water.mako
-<<<<<<< HEAD
-growstat/templates/watering.mako
-=======
 growstat/templates/watering.mako
 growstat/tests/__init__.py
 growstat/tests/test_pages.py
->>>>>>> Add tests
