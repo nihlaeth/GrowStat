@@ -208,10 +208,15 @@ create table if not exists nutrients (
     id integer primary key autoincrement,
     tstamp integer default (DATETIME('now')),
     supply integer not null,
-    name char(200) not null,
+    nid char(200) not null,
     amount decimal not null,
     unit char(200) not null
 );
+
+create table if not exists nutrient (
+    id integer primary key autoincrement,
+    name char(40) not null
+)
 
 create table if not exists movements (
     id integer primary key autoincrement,
