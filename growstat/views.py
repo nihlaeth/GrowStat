@@ -291,32 +291,45 @@ def humidity_view(request):
 def nutrients_view(request):
     if not request.method == 'POST':
         pass
-    elif not request.POST['name'] or not request.POST['supply'] or not request.POST['amount'] or not request.POST['unit']:
-        request.session.flash('All fields have to be filled out!')
-    elif not isinstance(int(request.POST['supply']),int):
-        request.session.flash('This is not a valid water supply!')
-    elif not isinstance(float(request.POST['amount']),float):
-        request.session.flash('This is not a valid amount!')
-    else :
-        #now check if the supply exists
-        supply=int(request.POST['supply'])
-        name=request.POST['name']
-        amount=request.POST['amount']
-        unit=request.POST['unit']
-        cur=request.db.cursor()
-        cur.execute('select count(*) from supplies where id = ?', [supply])
-        count=cur.fetchone()[0]
-        if count !=1 :
-            request.session.flash('This water supply does not exist!')
+    if request.POST.get('action', 'None')=='None':
+        request.session.flash('Cross site scripting error')
+    elif request.POST['action']=='add':
+        if not request.POST['name'] or not request.POST['supply'] or not request.POST['amount'] or not request.POST['unit']:
+            request.session.flash('All fields have to be filled out!')
+        elif not isinstance(int(request.POST['supply']),int):
+            request.session.flash('This is not a valid water supply!')
+        elif not isinstance(float(request.POST['amount']),float):
+            request.session.flash('This is not a valid amount!')
+        else :
+            #now check if the supply exists
+            supply=int(request.POST['supply'])
+            name=request.POST['name']
+            amount=request.POST['amount']
+            unit=request.POST['unit']
+            cur=request.db.cursor()
+            cur.execute('select count(*) from supplies where id = ?', [supply])
+            count=cur.fetchone()[0]
+            if count !=1 :
+                request.session.flash('This water supply does not exist!')
+            else:
+                request.db.execute('insert into nutrients (nid, amount, unit, supply) values (?, ?, ?, ?)', [name, amount, unit, supply])
+                request.db.commit()
+                request.session.flash('Nutrients were recorded successfully!')
+                return HTTPFound(location=request.route_url('home'))
+    elif request.POST['action']=='new':
+        if not request.POST['name']:
+            request.session.flash('You have to fill out a nutrient name')
         else:
-            request.db.execute('insert into nutrients (name, amount, unit, supply) values (?, ?, ?, ?)', [name, amount, unit, supply])
+            request.db.execute('insert into nutrient (name) values (?)', [request.POST['name']])
             request.db.commit()
-            request.session.flash('Nutrients were recorded successfully!')
-            return HTTPFound(location=request.route_url('home'))
+            request.session.flash('Nutrient added successfully')
+            return HTTPFound(location=request.route_url('nutrients'))
     cursor=request.db.cursor()
     cursor.execute('select * from supplies where id != ?', [0])
     supplies=cursor.fetchall()
-    return {'supplies' : supplies}
+    cursor.execute('select * from nutrient')
+    nutrients=cursor.fetchall()
+    return {'supplies' : supplies, 'nutrients': nutrients}
 
 @view_config(route_name='height', renderer='height.mako')
 def height_view(request):
