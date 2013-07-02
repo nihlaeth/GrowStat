@@ -468,7 +468,7 @@ def make_watering_sql_old(ID):
 
 # Helper function to produce SQL statement for use of watering view
 # (Sietse's refactoring)
-def make_watering_sql_new(ID)
+def make_watering_sql_new(ID):
     # First collect the bits and bobs of the SQL statements
     # Initialize lists, then grow them. (Using map() would work, too,
     # except python doesn't support two-line lambdas.)
