@@ -10,7 +10,7 @@ requires = [
     'pyramid',
     'pyramid_debugtoolbar',
     'waitress',
-    'pysqlite',
+#    'pysqlite',
     'webtest',   # Require only when testing?
     # 'imghdr',  # in core
     # 'shutil',  # in core
