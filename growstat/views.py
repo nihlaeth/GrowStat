@@ -475,7 +475,8 @@ def make_watering_sql_new(ID, request):
     values = []       # collection of [1, 0, ...]
     assignments = []  # collection of ['t0000=1', 't0030=0', ...]
     for time_i in TIMES_T:
-        val = str(int(request.POST.get(time_i, 0) == 1))
+        # NB: POST.get's elements are all strings, even the numbers
+        val = str(int(request.POST.get(time_i, 0) == '1'))
         values.append(val)
         assignments.append('{0}={1}'.format(time_i, val))
     assignments = ", ".join(assignments)
