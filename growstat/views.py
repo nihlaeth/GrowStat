@@ -355,7 +355,7 @@ def height_view(request):
 
 # Helper function to produce SQL statement for use of watering view
 # (Nihlaeth's old code, split into separate function)
-def make_watering_sql_old(ID):
+def make_watering_sql_old(ID, request):
     sql = 'update timerconfigs set '
     
     sql2 = 'insert into chtc (tcid,t0000,t0030,t0100,t0130,t0200,t0230,t0300,t0330,'
@@ -468,7 +468,7 @@ def make_watering_sql_old(ID):
 
 # Helper function to produce SQL statement for use of watering view
 # (Sietse's refactoring)
-def make_watering_sql_new(ID):
+def make_watering_sql_new(ID, request):
     # First collect the bits and bobs of the SQL statements
     # Initialize lists, then grow them. (Using map() would work, too,
     # except python doesn't support two-line lambdas.)
@@ -521,8 +521,8 @@ def watering_view(request):
                 # FIXME what type is request.POST['id']? 
                 # str(int(...)) seems redundant.
                 ID = str(int(request.POST['id']))
-                sql, sql2 = make_watering_sql_new(ID)
-                sqlo, sql2o = make_watering_sql_old(ID)
+                sql, sql2 = make_watering_sql_new(ID, request)
+                sqlo, sql2o = make_watering_sql_old(ID, request)
                 # TODO test whether sql == sqlo before switching to
                 # refactored version.
                 if sql==sql0 and sql2==sql20:
