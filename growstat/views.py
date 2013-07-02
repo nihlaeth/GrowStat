@@ -531,7 +531,7 @@ def watering_view(request):
                     request.db.commit()
                     request.session.flash('TimerConfig saved!')
                 else :
-                    request.session.flash('SQL did not match')
+                    request.session.flash('SQL did not match, sql='+ sql + ', sqlo=' + sqlo + ', sql2=' + sql2 + ', sql2o=' + sql2o)
                 return HTTPFound(location=request.route_url('watering'))
         except KeyError:
             request.session.flash('You have to fill out everything') 
