@@ -12,7 +12,10 @@ here = os.path.dirname(os.path.abspath(__file__))
 def home_view(request):
     cursor=request.db.cursor()
     cursor.execute('select sum(weight) from harvest')
-    totalharvest=cursor.fetchone()[0]/1000
+    try:
+        totalharvest=cursor.fetchone()[0]/1000
+    except TypeError:
+        totalharvest="None"
     #this one is complicated, can't just add everything up and plants get shorter after harvest sometimes
     cursor.execute('select * from height order by tstamp asc')
     heights=cursor.fetchall()
@@ -34,7 +37,10 @@ def home_view(request):
         totalgrowth+=growth[str(plant)]['growth']
     totalgrowth=totalgrowth/100
     cursor.execute('select * from plants where slot!=0')
-    totalliveplants=cursor.fetchone()[0]
+    try:
+        totalliveplants=cursor.fetchone()[0]
+    except TypeError:
+        totalliveplants=0
     cursor.execute('select avg(ph) from ph')
     averageph=cursor.fetchone()[0]
     cursor.execute('select avg(ec) from ec')
