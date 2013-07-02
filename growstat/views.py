@@ -291,7 +291,7 @@ def humidity_view(request):
 def nutrients_view(request):
     if not request.method == 'POST':
         pass
-    if request.POST.get('action', 'None')=='None':
+    elif request.POST.get('action', 'None')=='None':
         request.session.flash('Cross site scripting error')
     elif request.POST['action']=='add':
         if not request.POST['name'] or not request.POST['supply'] or not request.POST['amount'] or not request.POST['unit']:
