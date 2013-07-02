@@ -525,7 +525,7 @@ def watering_view(request):
                 sqlo, sql2o = make_watering_sql_old(ID, request)
                 # TODO test whether sql == sqlo before switching to
                 # refactored version.
-                if sql==sql0 and sql2==sql20:
+                if sql==sqlo and sql2==sql2o:
                     request.db.execute(sql)
                     request.db.execute(sql2)
                     request.db.commit()
