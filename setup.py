@@ -11,8 +11,9 @@ requires = [
     'pyramid_debugtoolbar',
     'waitress',
     'pysqlite',
-    'imghdr',
-    'shutil',
+    'webtest',   # Require only when testing?
+    # 'imghdr',  # in core
+    # 'shutil',  # in core
     ]
 
 setup(name='GrowStat',
@@ -34,7 +35,7 @@ setup(name='GrowStat',
       zip_safe=False,
       install_requires=requires,
       tests_require=requires,
-      test_suite="growstat",
+      test_suite="growstat.tests",
       entry_points="""\
       [paste.app_factory]
       main = growstat:main
