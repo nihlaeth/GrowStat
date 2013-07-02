@@ -363,10 +363,7 @@ def make_watering_sql_old(ID):
     sql2+='t1000,t1030,t1100,t1130,t1200,t1230,t1300,t1330,t1400,t1430,t1500,t1530,'
     sql2+='t1600,t1630,t1700,t1730,t1800,t1830,t1900,t1930,t2000,t2030,t2100,t2130,'
     sql2+='t2200,t2230,t2300,t2330) values (' + ID + ','
-
-    sql2 = 'insert into chtc (tcid, {times}) values ({int}, ' +
-        ",".join(TIMES_T),
-      
+    
     if request.POST.get('t0000', 0)=='1': 
         sql+= 't0000=1, '; sql2+= '1,'
     else : 
@@ -481,7 +478,7 @@ def make_watering_sql_new(ID)
         val = int(request.POST.get(time_i, 0) == 1)
         values.append(val)
         assignments.append('{0}={1}'.format(time_i, val))
-
+    
     # Next, create the SQL statements
     sql = ('update timerconfigs set {assignments} where id={ID}').format(
             assignments = assignments, 
