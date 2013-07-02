@@ -216,7 +216,7 @@ create table if not exists nutrients (
 create table if not exists nutrient (
     id integer primary key autoincrement,
     name char(40) not null
-)
+);
 
 create table if not exists movements (
     id integer primary key autoincrement,
