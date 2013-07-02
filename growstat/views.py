@@ -525,11 +525,13 @@ def watering_view(request):
                 sqlo, sql2o = make_watering_sql_old(ID)
                 # TODO test whether sql == sqlo before switching to
                 # refactored version.
-
-                request.db.execute(sql)
-                request.db.execute(sql2)
-                request.db.commit()
-                request.session.flash('TimerConfig saved!')
+                if sql==sql0 and sql2==sql20:
+                    request.db.execute(sql)
+                    request.db.execute(sql2)
+                    request.db.commit()
+                    request.session.flash('TimerConfig saved!')
+                else :
+                    request.session.flash('SQL did not match')
                 return HTTPFound(location=request.route_url('watering'))
         except KeyError:
             request.session.flash('You have to fill out everything') 
