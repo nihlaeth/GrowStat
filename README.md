@@ -42,14 +42,21 @@ This is a list of package versions with which GrowStat is known to work.
 
 To Do
 --------
-
 Recording pages:
 * Lumen tracking capabilites
+* Picture uploading
+** Build in size check and limit (30MB max, 50kb min)
+** Search for 'code words' in images
+** Change random pixels in images to frustrate code injection - without sacrificing considerable quality loss
+* Make Nutrients separate items to be added and selected
 
 Edit pages:
 * All of them, including delete pages.
 
 Data views:
+* build in calendar functions
+* select plotting engine and build an api for it
+* add per-plant data view
 * add timeline view and template
 * add useful analytic pages
 
@@ -57,13 +64,22 @@ Less priority:
 * authentication system
 * backup & backup restore function
 
-Maybe for later:
+Documentation (wiki)
+* write style guide
+* write manifest
+* write extensive tutorial / getting started
+* BETTER COMMENTING
+* select open source license
+
+For later:
 * migrate to a database that doesn't suck
 * notifications
 * sharing options
 * multiuser functionality
 * admin system and permissions config
 * wildcard domain support
+* datalogger information import
+* data export (in a format suitable for analysis software like spss)
 
 Contributors
 ------------
