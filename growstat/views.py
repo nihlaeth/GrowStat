@@ -525,7 +525,7 @@ def watering_view(request):
                 request.db.execute(sql)
                 request.db.execute(sql2)
                 request.db.commit()
-                request.session.flash('TimerConfig saved!')
+                request.session.flash('TimerConfig saved! --------sql='+sql+'-----------sql2='+sql2)
                 return HTTPFound(location=request.route_url('watering'))
         except KeyError:
             request.session.flash('You have to fill out everything') 
