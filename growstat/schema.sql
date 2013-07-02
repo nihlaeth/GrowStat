@@ -18,7 +18,7 @@ insert or ignore into columns (id, name, supply) values (0, 'Dead', 0);
 create table if not exists slots (
     id integer primary key autoincrement,
     name char(100) not null,
-    col interger not null,
+    col integer not null,
     tstamp integer default (DATETIME('now'))
 );
 
