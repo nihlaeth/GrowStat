@@ -475,9 +475,10 @@ def make_watering_sql_new(ID, request):
     values = []       # collection of [1, 0, ...]
     assignments = []  # collection of ['t0000=1', 't0030=0', ...]
     for time_i in TIMES_T:
-        val = int(request.POST.get(time_i, 0) == 1)
+        val = str(int(request.POST.get(time_i, 0) == 1))
         values.append(val)
         assignments.append('{0}={1}'.format(time_i, val))
+    assignments = ", ".join(assignments)
     
     # Next, create the SQL statements
     sql = ('update timerconfigs set {assignments} where id={ID}').format(
@@ -492,7 +493,7 @@ def make_watering_sql_new(ID, request):
            'values ({ID}, {values})').format(
                    times = ", ".join(TIMES_T),
                    ID = ID,
-                   values = values)
+                   values = ", ".join(values))
     return sql, sql2
 
 @view_config(route_name='watering', renderer='watering.mako')
@@ -518,20 +519,13 @@ def watering_view(request):
                 request.session.flash('This is not valid input!')
             else:
                 # Create the SQL statements (code factored out)
-                # FIXME what type is request.POST['id']? 
-                # str(int(...)) seems redundant.
+                # cast to int, then string, to prevent XSS
                 ID = str(int(request.POST['id']))
                 sql, sql2 = make_watering_sql_new(ID, request)
-                sqlo, sql2o = make_watering_sql_old(ID, request)
-                # TODO test whether sql == sqlo before switching to
-                # refactored version.
-                if sql==sqlo and sql2==sql2o:
-                    request.db.execute(sql)
-                    request.db.execute(sql2)
-                    request.db.commit()
-                    request.session.flash('TimerConfig saved!')
-                else :
-                    request.session.flash('SQL did not match, sql='+ sql + ', sqlo=' + sqlo + ', sql2=' + sql2 + ', sql2o=' + sql2o)
+                request.db.execute(sql)
+                request.db.execute(sql2)
+                request.db.commit()
+                request.session.flash('TimerConfig saved!')
                 return HTTPFound(location=request.route_url('watering'))
         except KeyError:
             request.session.flash('You have to fill out everything') 
