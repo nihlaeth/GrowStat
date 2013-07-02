@@ -487,7 +487,7 @@ def make_watering_sql_new(ID, request):
     # literals in one statement (no comma in between!) get concatenated
     # automatically.
     # str.format is excellent, too.
-    sql = ('insert ' 
+    sql2 = ('insert ' 
            'into chtc (tcid, {times}) '
            'values ({ID}, {values})').format(
                    times = ", ".join(TIMES_T),
